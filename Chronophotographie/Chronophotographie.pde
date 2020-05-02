@@ -21,7 +21,7 @@ PGraphics result;
 
 
 void settings() {
-  size(1280, 720, P2D);
+  size(1920, 1080, P2D);
 }
 
 void setup() {
@@ -111,6 +111,12 @@ void draw() {
         .bloom(params.resThreshold, params.resBlur, params.resSigma)
         .compose();
     }
+    /*
+    fx.render()    
+        .saturationVibrance(params.resSaturation, params.resVibrance)
+        .blur(params.resBlurAmount, params.resBlurAmount)
+        .bloom(params.resThreshold, params.resBlur, params.resSigma)
+        .compose();*/
   }
 }
 
@@ -118,6 +124,17 @@ void movieEvent(Movie m) {
   m.read();
 }
 
+
+void keyReleased(){
+  if (key == 'l' || key =='L'){
+    selectInput("Select a file to process:", "fileSelected");
+  }
+  if (key == 's' || key =='S'){
+   saveFrame(nf(year(), 4, 0) + "-" + nf(month(), 2, 0) + "-" + nf(day(), 2, 0) + "-" +
+        nf(hour(), 2, 0) + "h" + nf(minute(), 2, 0) + "m" + nf(second(), 2, 0) + "s.png");
+  }
+  
+}
 
 public void fileSelected(File selection) {
   if (selection == null) {
