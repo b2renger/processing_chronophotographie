@@ -1,3 +1,6 @@
+// add option to set resolution
+
+
 import ch.bildspur.postfx.builder.*;
 import ch.bildspur.postfx.pass.*;
 import ch.bildspur.postfx.*;
@@ -27,38 +30,36 @@ void settings() {
 void setup() {
 
   background(0);
+  pixelDensity(1);
   setup_gui();
   params = new Params();
   surface.setResizable(true);
 
   // prompt user to select a video file
-  selectInput("Select a file to process:", "fileSelected");
+  //selectInput("Select a file to process:", "fileSelected");
 
   // Load and play a default video
   movie = new Movie(this, file);
   movie.loop();
 
   initLayers();
+  initShader();
 
 
   // post processing
   fx = new PostFX(this);
 }
 
-void initLayers() {
-  bg = createGraphics(width, height, P2D);
-  current = createGraphics(width, height, P2D);
-  result = createGraphics(width, height, P2D);
-
-  bgRemove = loadShader( "removal.glsl" );
-  bgRemove.set( "sketchSize", float(width), float(height) );
-  bgRemove.set( "bg", bg ); 
-  bgRemove.set( "current", current );
-  bgRemove.set( "topLayerResolution", float( width ), float( height ) );
-  bgRemove.set( "lowLayerResolution", float( width ), float( height ) );
-}
 
 void draw() {
+  background(0);
+  
+  
+  if (params.play) {
+    movie.loop();
+  } else {
+    movie.pause();
+  }
 
   if (firstFrame) {
     bg.beginDraw();  
@@ -111,12 +112,13 @@ void draw() {
         .bloom(params.resThreshold, params.resBlur, params.resSigma)
         .compose();
     }
-    /*
-    fx.render()    
+    
+     fx.render()    
         .saturationVibrance(params.resSaturation, params.resVibrance)
         .blur(params.resBlurAmount, params.resBlurAmount)
         .bloom(params.resThreshold, params.resBlur, params.resSigma)
-        .compose();*/
+        .compose();
+    
   }
 }
 
@@ -125,15 +127,14 @@ void movieEvent(Movie m) {
 }
 
 
-void keyReleased(){
-  if (key == 'l' || key =='L'){
+void keyReleased() {
+  if (key == 'l' || key =='L') {
     selectInput("Select a file to process:", "fileSelected");
   }
-  if (key == 's' || key =='S'){
-   saveFrame(nf(year(), 4, 0) + "-" + nf(month(), 2, 0) + "-" + nf(day(), 2, 0) + "-" +
-        nf(hour(), 2, 0) + "h" + nf(minute(), 2, 0) + "m" + nf(second(), 2, 0) + "s.png");
+  if (key == 's' || key =='S') {
+    saveFrame(nf(year(), 4, 0) + "-" + nf(month(), 2, 0) + "-" + nf(day(), 2, 0) + "-" +
+      nf(hour(), 2, 0) + "h" + nf(minute(), 2, 0) + "m" + nf(second(), 2, 0) + "s.png");
   }
-  
 }
 
 public void fileSelected(File selection) {
@@ -142,14 +143,30 @@ public void fileSelected(File selection) {
   } else {
     println("User selected " + selection.getAbsolutePath());
     file = selection.getAbsolutePath();
-    //fileSelected = true;
-    // Load and play the video in a loop
-    //println(file);
-    //println(movie);
+   
     movie = new Movie(this, file);
     movie.loop();
     firstFrame = true;
-    surface.setSize(movie.width, movie.height);
+    //surface.setSize(movie.width, movie.height);
     initLayers();
+    initShader();
+
   }
+}
+
+
+
+void initLayers() {
+  bg = createGraphics(width, height, P2D);
+  current = createGraphics(width, height, P2D);
+  result = createGraphics(width, height, P2D);
+}
+
+void initShader(){
+  bgRemove = loadShader( "removal.glsl" );
+  bgRemove.set( "sketchSize", float(width), float(height) );
+  bgRemove.set( "bg", bg ); 
+  bgRemove.set( "current", current );
+  bgRemove.set( "topLayerResolution", float( width ), float( height ) );
+  bgRemove.set( "lowLayerResolution", float( width ), float( height ) );
 }

@@ -2,8 +2,8 @@ class Params {
   
   boolean play = false;
 
-  boolean backgroundPostProcess = true;
-  boolean resultPostProcess = true;
+  boolean backgroundPostProcess = false;
+  boolean resultPostProcess = false;
   
   float removalThreshold = 0.1;
   
