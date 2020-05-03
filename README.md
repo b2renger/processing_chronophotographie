@@ -19,3 +19,15 @@ An you will also need to install the following libraries from "**sketch**" => "*
 - Post-FX from Florian Bruggisser
 
 - MovieExport from Hamoid.
+
+
+## Instructions 
+
+To get record a video :
+
+- press l to load a custom video
+- enter a file name to record to in the "file_name field" and press ENTER.
+- press reset before recording
+- toggle record
+- untoggle record to finish the recording
+- press render to actually export the movie file in the program folder.
