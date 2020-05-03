@@ -20,7 +20,7 @@ An you will also need to install the following libraries from "**sketch**" => "*
     
 - Post-FX from Florian Bruggisser
 
-- MovieExport from Hamoid.
+- Video Export from Abe Pazos.
 
 
 ## Instructions 
