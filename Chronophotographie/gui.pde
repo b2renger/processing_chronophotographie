@@ -1,16 +1,16 @@
-ControlFrame cf;
+public ControlFrame cf;
 
 
 
-void setup_gui() {
+public void setup_gui() {
   //cp5 = new ControlP5(this);
   cf = new ControlFrame(this, 300, 800, "Controls");
-  surface.setLocation(10, 10);
+  surface.setLocation(320, 50);
 }
 
 
 
-class ControlFrame extends PApplet {
+public class ControlFrame extends PApplet {
 
   int w, h;
   PApplet parent;
@@ -29,14 +29,14 @@ class ControlFrame extends PApplet {
   }
 
   public void setup() {
-    surface.setLocation(10, 10);
+    surface.setLocation(10, 50);
     cp5 = new ControlP5(this);
 
     Group g1 = cp5.addGroup("OPTIONS")
       .setBackgroundColor(color(0, 64))
       .setFont(createFont("roboto", 14))
       .setHeight(22)
-      .setBackgroundHeight(130)
+      .setBackgroundHeight(170)
       ;
 
     cp5.addToggle("play_pause") 
@@ -55,6 +55,8 @@ class ControlFrame extends PApplet {
       .moveTo(g1)
       ;
 
+    
+
     cp5.addTextarea("txt1")
       .setPosition(5, 60)
       .setSize(w, 50)
@@ -71,6 +73,31 @@ class ControlFrame extends PApplet {
       .setText("'L' to load a video")
       .moveTo(g1)
       ;
+      /*
+     cp5.addTextarea("switch resolution")
+      .setPosition(5, 120)
+      .setSize(w, 50)
+      .setFont(createFont("roboto", 14))
+      .setLineHeight(16)
+      .setText("'1' for XGA   -   '2' for HD   -   '3' for fullHD")
+      .moveTo(g1)
+      ;*/
+      
+      cp5.addRadioButton("resolutionRadio")
+         .setPosition(5,130)
+         .setSize(40,20)
+         .setColorForeground(color(120))
+         .setColorActive(color(255))
+         .setColorLabel(color(255))
+         .setItemsPerRow(5)
+         .setSpacingColumn(50)
+         .addItem("SVGA",1)
+         .addItem("HD",2)
+         .addItem("FULLHS",3)
+        .moveTo(g1)
+         ;
+
+
 
 
 
@@ -84,12 +111,12 @@ class ControlFrame extends PApplet {
 
     cp5.addSlider("removal_threshold")
       .setRange(0, 1)
-      .setValue(params.removalThreshold)
+      .setValue(0.25)
       .setPosition(5, 5)
       .setSize(w-10, 30)
       .moveTo(g2)
       .getCaptionLabel().align(ControlP5.RIGHT, ControlP5.CENTER);
-      
+
 
 
     Group g3 = cp5.addGroup("POST-PROCESSING")
@@ -131,12 +158,16 @@ class ControlFrame extends PApplet {
     firstFrame= true;
   }
   
-   ///////////////////////////////
+  void resolutionRadio(int a){
+    setResolution(a);
+  }
+
+  ///////////////////////////////
   // callbacks chrono
   void removal_threshold(float v) {
     params.removalThreshold = v;
   }
-  
+
 
   ///////////////////////////////
   // callbacks post process
@@ -149,12 +180,6 @@ class ControlFrame extends PApplet {
 
 
   void keyReleased() {
-    if (key == 'l' || key =='L') {
-      selectInput("Select a file to process:", "fileSelected");
-    }
-    if (key == 's' || key =='S') {
-      saveFrame(nf(year(), 4, 0) + "-" + nf(month(), 2, 0) + "-" + nf(day(), 2, 0) + "-" +
-        nf(hour(), 2, 0) + "h" + nf(minute(), 2, 0) + "m" + nf(second(), 2, 0) + "s.png");
-    }
+    shortcuts();
   }
 }

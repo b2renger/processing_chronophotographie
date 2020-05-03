@@ -1,11 +1,11 @@
-class Params {
+public class Params {
   
   boolean play = false;
 
   boolean backgroundPostProcess = false;
   boolean resultPostProcess = false;
   
-  float removalThreshold = 0.1;
+  float removalThreshold = 0.25;
   
   int bgBlurAmount = 10;
   float bgSaturation = 0.1;

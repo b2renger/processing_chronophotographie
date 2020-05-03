@@ -7,9 +7,9 @@ import ch.bildspur.postfx.*;
 import processing.video.*;
 import controlP5.*;
 
-ControlP5 cp5;
+public ControlP5 cp5;
 PostFX fx;
-Params params;
+public Params params;
 Movie movie;
 String file = "C0052.mp4";
 
@@ -24,16 +24,17 @@ PGraphics result;
 
 
 void settings() {
-  size(1920, 1080, P2D);
+  size(1280, 720, P2D);
 }
 
 void setup() {
 
   background(0);
   pixelDensity(1);
-  setup_gui();
   params = new Params();
+ 
   surface.setResizable(true);
+  setup_gui();
 
   // prompt user to select a video file
   //selectInput("Select a file to process:", "fileSelected");
@@ -128,13 +129,20 @@ void movieEvent(Movie m) {
 
 
 void keyReleased() {
+  shortcuts();
+}
+
+public void shortcuts(){
   if (key == 'l' || key =='L') {
-    selectInput("Select a file to process:", "fileSelected");
-  }
-  if (key == 's' || key =='S') {
-    saveFrame(nf(year(), 4, 0) + "-" + nf(month(), 2, 0) + "-" + nf(day(), 2, 0) + "-" +
-      nf(hour(), 2, 0) + "h" + nf(minute(), 2, 0) + "m" + nf(second(), 2, 0) + "s.png");
-  }
+      selectInput("Select a file to process:", "fileSelected");
+    }
+    if (key == 's' || key =='S') {
+      saveFrame(nf(year(), 4, 0) + "-" + nf(month(), 2, 0) + "-" + nf(day(), 2, 0) + "-" +
+        nf(hour(), 2, 0) + "h" + nf(minute(), 2, 0) + "m" + nf(second(), 2, 0) + "s.png");
+    }
+    if (key == '1') setResolution(0);
+    if (key == '2') setResolution(1);
+    if (key == '3') setResolution(2);
 }
 
 public void fileSelected(File selection) {
@@ -155,6 +163,20 @@ public void fileSelected(File selection) {
 }
 
 
+public void setResolution(int a) {
+  if (a == 1) {
+    surface.setSize(800, 600);
+  } else if (a == 2) {
+    surface.setSize(1280, 720);
+  } else if (a ==3){
+    surface.setSize(1920, 1080);
+  }
+  background(0);
+  initLayers();
+  initShader();
+  firstFrame= true;
+  fx = new PostFX(this);
+}
 
 void initLayers() {
   bg = createGraphics(width, height, P2D);
