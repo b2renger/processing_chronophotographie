@@ -1,30 +1,21 @@
 public class Params {
-  
-  boolean play = false;
 
-  boolean backgroundPostProcess = false;
-  boolean resultPostProcess = false;
-  
-  float removalThreshold = 0.25;
-  
-  int bgBlurAmount = 10;
-  float bgSaturation = 0.1;
-  float bgVibrance = 0.1;
-  
-  int resBlurAmount = 10;
-  float resSaturation = 0.1;
-  float resVibrance = 0.1;
-  float resSigma = 0.2;
-  int resBlur = 20;
-  float resThreshold = 25;
-   
+  public boolean play = false;
+  public boolean render = false;
+
+  public float removalThreshold = 0.35;
+
+
+  public int resBlurAmount = 10;
+  public float resSaturation = 0.15;
+  public float resVibrance = 0.4;
+
+
   // every max Frame draw nFrame at max opacity
-  float minOpacity = 0.1;
-  float maxOpacity = 1;
-  float maxFrame = 25;
-  float nFrame = 10;
-  
-  
+  public float maxFrame = 35;
+  public float nFrame = 1;
+
+
   Params() {
   }
 }
