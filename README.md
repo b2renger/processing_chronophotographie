@@ -14,13 +14,21 @@ To do this you will need to install processing [processing](https://processing.o
 
 An you will also need to install the following libraries from "**sketch**" => "**import a library**" => "**add a library**" menu :
 
- - Processing video from the Processing Foundation
+- Processing video from the Processing Foundation
     
 - Control P5 from Andreas Schlegel
     
 - Post-FX from Florian Bruggisser
 
 - Video Export from Abe Pazos.
+
+For this last one to work you'll need ffmpeg :
+
+- on windows : http://blog.gregzaal.com/how-to-install-ffmpeg-on-windows/
+
+- on mac : https://timrodenbroeker.de/processing-tutorial-video-export/
+
+- on linux it should be available from your packet manager
 
 
 ## Instructions 
