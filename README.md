@@ -4,6 +4,8 @@ A small app made with processing to experiment with chronophotography from video
 
 Chronophotgraphy is a graphic process to visualize movement. You can learn a lot more about it on wikipedia : https://en.wikipedia.org/wiki/Chronophotography
 
+![gif](gif.gif)
+
 This app is built with [processing](https://processing.org/) and GLSL shaders.
 
 To run this app either, grab the latest release from the release tab **or** download the source code from this repo and run the program.
