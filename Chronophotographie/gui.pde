@@ -45,7 +45,7 @@ public class ControlFrame extends PApplet {
       .setSize(90, 20)
       .setFont(createFont("roboto", 14))
       .setPosition(5, 5)
-      .setValue(false)
+      .setValue(true)
       .setMode(ControlP5.SWITCH)
       .moveTo(g1)
       ;
@@ -74,17 +74,8 @@ public class ControlFrame extends PApplet {
       .moveTo(g1)
       ;
 
-    cp5.addTextarea("txtRender")
-      .setPosition(5, 130)
-      .setSize(w, 50)
-      .setFont(createFont("roboto", 14))
-      .setLineHeight(16)
-      .setText("'R' to render to files")
-      .moveTo(g1)
-      ;
-
     cp5.addRadioButton("resolutionRadio")
-      .setPosition(5, 170)
+      .setPosition(5, 120)
       .setSize(40, 20)
       .setColorForeground(color(120))
       .setColorActive(color(255))
@@ -97,9 +88,24 @@ public class ControlFrame extends PApplet {
       .moveTo(g1)
       ;
 
-    // create a toggle
+    cp5.addTextfield("file_name")
+      .setPosition(5, 170)
+      .setSize(200, 25)
+      .setFont(createFont("roboto", 14))
+      .setFocus(true)
+      .setColor(color(255, 0, 0))
+      ;
+
+
+    render = cp5.addToggle("record")
+      .setPosition(5, 200)
+      .setSize(100, 25)
+      .setFont(createFont("roboto", 14))
+      .moveTo(g1);
+    render.getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER);
+
     render = cp5.addToggle("render")
-      .setPosition(100, 200)
+      .setPosition(195, 200)
       .setSize(100, 25)
       .setFont(createFont("roboto", 14))
       .moveTo(g1);
@@ -201,8 +207,14 @@ public class ControlFrame extends PApplet {
 
   void draw() {
     background(190);
-    
-    text("fps : " + nf(fr,2,2), 5, accHeight*3 - 20);
+    fill(255);
+    text("fps : " + nf(fr, 2, 2), 5, accHeight*3 - 20);
+
+    if (recording) {
+      noStroke();
+      fill(255, 0, 0, sin(frameCount/10.)*255);
+      ellipse(w-25, accHeight*3-20, 20, 20);
+    }
   }
 
   ///////////////////////////////
@@ -226,16 +238,22 @@ public class ControlFrame extends PApplet {
     setResolution(a);
   }
 
-  void render(boolean v) {
-    params.render = v;
-    movie.jump(0);
-    movie.play();
-    play.setValue(true);
-    background(0);
-    initLayers();
-    initShader();
-    firstFrame= true;
+  public void file_name(String theText) {
+    recordingName = theText;
+    videoExport = new VideoExport(this, recordingName + ".mp4");
+    videoExport.startMovie();
   }
+
+
+  void render(boolean v) {
+    videoExport.endMovie();
+  }
+
+  void record(boolean v) {
+    recording = !recording;
+    println("Recording is " + (recording ? "ON" : "OFF"));
+  }
+
 
   ///////////////////////////////
   // callbacks chrono

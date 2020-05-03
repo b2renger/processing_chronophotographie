@@ -4,6 +4,12 @@ import ch.bildspur.postfx.pass.*;
 import ch.bildspur.postfx.*;
 import processing.video.*;
 import controlP5.*;
+import com.hamoid.*;
+
+
+VideoExport videoExport;
+boolean recording = false;
+String recordingName = "test";
 
 public ControlP5 cp5;
 PostFX fx;
@@ -28,39 +34,39 @@ void settings() {
 }
 
 void setup() {
-  
+
   surface.setResizable(true);
   params = new Params();
   movie = new Movie(this, file);
-  
+
   background(0);
   pixelDensity(1);
-  
+
   setup_gui();
-  
+
   // post processing
   fx = new PostFX(this);
-  
+
   // prompt user to select a video file
   //selectInput("Select a file to process:", "fileSelected");
 
   initLayers();
   initShader();
   movie.jump(0);
-  
+
   frameRate(24);
 }
 
 
 void draw() {
   background(0);
-  
+
   fr = frameRate;
 
 
   if (params.play) {
     movie.loop();
-     nFrame+=1;
+    nFrame+=1;
   } else {
     movie.pause();
   }
@@ -73,7 +79,7 @@ void draw() {
     firstFrame = false;
   } else {
 
-    
+
 
     current.beginDraw();  
     current.image(movie, 0, 0, current.width, current.height);
@@ -112,8 +118,9 @@ void draw() {
       .blur(params.resBlurAmount, params.resBlurAmount)
       .compose();
 
-    if (params.render) {
-      saveFrame("frames/####.tiff");
+
+    if (recording) {
+      videoExport.saveFrame();
     }
   }
 }
@@ -135,16 +142,7 @@ public void shortcuts() {
     saveFrame(nf(year(), 4, 0) + "-" + nf(month(), 2, 0) + "-" + nf(day(), 2, 0) + "-" +
       nf(hour(), 2, 0) + "h" + nf(minute(), 2, 0) + "m" + nf(second(), 2, 0) + "s.png");
   }
-  if (key == 'r' || key =='R') {
-    params.render = !params.render;
-    cf.render.setValue(params.render);
-    movie.jump(0);
-    background(0);
-    initLayers();
-    initShader();
-    firstFrame= true;
-    nFrame =0;
-  }
+
   if (key == '1') setResolution(0);
   if (key == '2') setResolution(1);
   if (key == '3') setResolution(2);
@@ -163,6 +161,8 @@ public void fileSelected(File selection) {
     //surface.setSize(movie.width, movie.height);
     initLayers();
     initShader();
+    videoExport = new VideoExport(this, recordingName + ".mp4");
+    videoExport.startMovie();
   }
 }
 
@@ -180,12 +180,16 @@ public void setResolution(int a) {
   initShader();
   firstFrame= true;
   fx = new PostFX(this);
+  videoExport = new VideoExport(this, recordingName + ".mp4");
+  videoExport.startMovie();
 }
 
 void initLayers() {
   bg = createGraphics(width, height, P2D);
   current = createGraphics(width, height, P2D);
   result = createGraphics(width, height, P2D);
+  videoExport = new VideoExport(this, recordingName + ".mp4");
+  videoExport.startMovie();
 }
 
 void initShader() {

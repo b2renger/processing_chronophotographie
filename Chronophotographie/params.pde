@@ -1,6 +1,6 @@
 public class Params {
 
-  public boolean play = false;
+  public boolean play = true;
   public boolean render = false;
 
   public float removalThreshold = 0.35;

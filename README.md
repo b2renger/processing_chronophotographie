@@ -17,3 +17,5 @@ An you will also need to install the following libraries from "**sketch**" => "*
 - Control P5 from Andreas Schlegel
     
 - Post-FX from Florian Bruggisser
+
+- MovieExport from Hamoid.
